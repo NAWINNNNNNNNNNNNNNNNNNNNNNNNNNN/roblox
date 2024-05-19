@@ -57,18 +57,11 @@ mode 110,28
 chcp 65001
 cls                                                                                  
 echo.
-ECHO.%col%[33m                                        
-ECHO.%col%[33m                       ██╗    ██╗     ║██║     ███╗   ██╗
-ECHO.%col%[33m                       ██║    ██║     ║██║     ████╗  ██║
-ECHO.%col%[33m                       ██║ █╗ ██║     ║██║     ██╔██╗ ██║
-ECHO.%col%[33m                       ██║███╗██║     ║██║     ██║╚██╗██║
-ECHO.%col%[33m                       ╚███╔███╔╝     ║██║     ██║ ╚████║
-ECHO.%col%[33m                        ╚══╝╚══╝      ║██║     ╚═╝  ╚═══╝    
 ECHO.%col%[33m
-ECHO.%col%[33m        [THE Win winterfell X thomas winterfell X 𝗦𝗘𝗔𝗡𝗨𝗔𝗟 𝙭 𝗦𝗣𝗢𝗢𝗙𝗘𝗥]
+ECHO.%col%[33m        [Seanual x Spoofer]
 ECHO.%col%[33m    
 ECHO.%col%[33m     
-ECHO.%col%[33m        [Win winterfell  BYPASS ISREAL LAUNCHER] 
+ECHO.%col%[33m        [BYPASS ALL BY WIN] 
 ECHO.%col%[33m  
 ECHO.%col%[33m        
 ECHO.%col%[33m        [SHOP:https://discord.gg/8PWYMqVD]                                 
@@ -77,7 +70,7 @@ ECHO.
 echo.      %col%[97m╔════════════════════════════════════════════════════════════════════════════════════════════════╗   
 echo.            %col% 
 echo.
-echo.	  	    [%col%[92m[1 Win winterfell]       %col%[31m[2 thomas winterfell]       %col%[94m[3 𝗦𝗘𝗔𝗡𝗨𝗔𝗟 𝙭 𝗦𝗣𝗢𝗢𝗙𝗘𝗥]
+echo.	  	    [%col%[92m[1 CUNTOM BY STAFSEANUAL]       %col%[31m[2 WIN]       %col%[94m[3 SEANUAL]
 echo. 	
 echo. 		      
 echo.      %col%[97m╚════════════════════════════════════════════════════════════════════════════════════════════════╝
