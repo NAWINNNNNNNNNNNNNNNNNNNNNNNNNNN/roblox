@@ -1,4 +1,4 @@
-  local titolo = "<FONT COLOR='#1F2124'>SXNGSOM STORE ~r~NEW"
+  local titolo = "<FONT COLOR='#1F2124'>SEANUAL MENU FIVEM ~r~10/6/2024"
 local pisellone = PlayerId(-1)
 local pisello = GetPlayerName(pisellone)
 local showblip = false
@@ -56,7 +56,7 @@ local descHeight = 0.035
 local descFont = 1
 local descXOffset = 0.003
 local descScale = 0.370
-local bytexd = "Sxngsomstore"
+local bytexd = "SEANUAL MENU"
 local MenuWider = nil
 
 intro = 0
@@ -296,7 +296,7 @@ local function drawButton(text, subText)
     -- Default settings
     menus[id] = {}
     menus[id].title = titolo
-    menus[id].subTitle = "# Sxngsomstore"
+    menus[id].subTitle = "# SEANUAL MENU"
 
 
     menus[id].visible = false
